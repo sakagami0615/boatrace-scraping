@@ -1,14 +1,5 @@
 
 
-"""
-class Const:
-    pass
-
-class Param:
-    pass
-"""
-
-
 class BoatraceScraping:
 	def __init__(self):
 		pass

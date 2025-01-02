@@ -5,7 +5,6 @@ from boatrace.common import ColumnDatatype
 from boatrace.common.cast_function import Datetime
 
 
-
 @dataclass
 class ScheduleColumns(ColumnsMixin):
     race_no:    ColumnDatatype = field(default_factory=lambda: ColumnDatatype("レース番号", int))

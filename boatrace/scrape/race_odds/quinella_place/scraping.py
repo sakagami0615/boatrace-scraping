@@ -1,24 +1,23 @@
-from typing import Any
-
 from bs4.element import Tag
 from datetime import datetime
 
 from boatrace.common import get_beautiful_soup
 from boatrace.parameter import RaceInfoUrls
+from boatrace.scrape.race_odds.quinella_place import OddsQuinellaPlaceHtmlClass
 from boatrace.scrape.race_odds.quinella_place import OddsQuinellaPlaceColumns
-from boatrace.scrape.race_odds.quinella_place import OddsQuinellaPlaceConst
 from boatrace.setting import CUSTOM_PARAM, TOOL_PARAM
 
 
-
 class OddsQuinellaPlaceScraping:
+    """拡連複オッズのスクレイピング"""
+
     def __init__(self):
-        pass
+        self._column = OddsQuinellaPlaceColumns()
 
     def scrape(self, race_id: int, stadium_id: int, date: datetime) -> list[dict]:
         url = RaceInfoUrls.FMT_ODDS_QUINELLA_PLACE.format(race_id, stadium_id, date)
         soup = get_beautiful_soup(url, CUSTOM_PARAM.cache_folder)
-        tbody_soup = soup.find("tbody", class_=OddsQuinellaPlaceConst.tbody_class)
+        tbody_soup = soup.find("tbody", class_=OddsQuinellaPlaceHtmlClass.tbody_class)
 
         tr_soups = tbody_soup.find_all("tr")
 
@@ -39,7 +38,7 @@ class OddsQuinellaPlaceScraping:
             minmax_odds = td_soups[idx_1st * 2 + 1].text.strip().split("-")
 
             if minmax_odds != [""]:
-                scrape_datas.append(OddsQuinellaPlaceColumns().cast([
+                scrape_datas.append(self._column.cast([
                     race_id,
                     stadium_id,
                     date,

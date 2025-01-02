@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class ScheduleTableInfoInHtml:
     n_cols:         int = 8

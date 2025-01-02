@@ -11,13 +11,13 @@ from boatrace.scrape.race_card import RaceCardWideIndex
 from boatrace.scrape.race_card import RaceCardLocalIndex
 from boatrace.scrape.race_card import RaceCardMotorIndex
 from boatrace.scrape.race_card import RaceCardBoatIndex
-from boatrace.scrape.race_card import RaceCardConst
+from boatrace.scrape.race_card import RaceCardHtmlClass
 from boatrace.scrape.race_card import RaceCardColumns
 from boatrace.setting import CUSTOM_PARAM, TOOL_PARAM
 
 
-
 class RaceCardScraping:
+    """出走表のスクレイピング"""
 
     def __init__(self):
         self._column = RaceCardColumns()
@@ -26,8 +26,8 @@ class RaceCardScraping:
         url = RaceInfoUrls.FMT_RACE_CARD.format(race_id, stadium_id, date)
         soup = get_beautiful_soup(url, CUSTOM_PARAM.cache_folder)
 
-        table_soup = soup.find("div", class_=RaceCardConst.table_class).find("table")
-        tbody_soups = table_soup.find_all("tbody", class_=RaceCardConst.tbody_class)
+        table_soup = soup.find("div", class_=RaceCardHtmlClass.table_class).find("table")
+        tbody_soups = table_soup.find_all("tbody", class_=RaceCardHtmlClass.tbody_class)
 
         scrape_datas = []
         for tbody_soup in tbody_soups:

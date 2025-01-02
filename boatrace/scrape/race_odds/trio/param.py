@@ -9,7 +9,7 @@ class OddsTrioTableInfoInHtml:
 
 
 @dataclass
-class OddsTrioConst:
+class OddsTrioHtmlClass:
     tbody_class: str = "is-p3-0"
     td_class: str = "is-fs14"
     disable_class: str = "is-disabled"

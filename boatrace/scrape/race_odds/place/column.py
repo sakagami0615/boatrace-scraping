@@ -5,7 +5,6 @@ from boatrace.common import ColumnDatatype
 from boatrace.common.cast_function import Datetime
 
 
-
 @dataclass
 class OddsPlaceColumns(ColumnsMixin):
     race_id:            ColumnDatatype = field(default_factory=lambda: ColumnDatatype("レースID", int))

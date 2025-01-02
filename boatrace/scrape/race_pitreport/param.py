@@ -21,6 +21,6 @@ class RacePitReportRacerIndex:
 
 
 @dataclass
-class RacePitReportConst:
+class RacePitReportHtmlClass:
     table_class: str = "table1"
     alert_class: str = "title12_title"

@@ -1,3 +1,3 @@
 from .column import OddsWinColumns
-from .param import OddsWinConst
+from .param import OddsWinHtmlClass
 from .scraping import OddsWinScraping

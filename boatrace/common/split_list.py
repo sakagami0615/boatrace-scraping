@@ -25,7 +25,18 @@ def _n_item_split_list(src_list: list[Any], n_item: int) -> list[Any]:
     return dst_list
 
 
-def split_list(src_list: list[Any], n_div: Union[int, None]=None, n_item: Union[int, None]=None) -> list[Any]:
+def split_list(src_list: list[Any], n_div: Union[int, None]=None, n_item: Union[int, None]=None) -> list[list[Any]]:
+    """「分割数」もしくは「アイテム数」を指定し、1次元リストを2次元リストに分割
+    (「分割数」「アイテム数」の両方が指定された場合、「分割数」を優先)
+
+    Args:
+        src_list (list[Any]): 対象リスト
+        n_div (Union[int, None], optional): 分割数 (Defaults to None.)
+        n_item (Union[int, None], optional): 分割後の1要素のアイテム数 (Defaults to None.)
+
+    Returns:
+        list[list[Any]]: 分割後リスト
+    """
     if n_div:
         return _n_div_split_list(src_list, n_div)
     elif n_item:

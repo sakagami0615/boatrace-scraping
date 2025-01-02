@@ -2,21 +2,20 @@ from tqdm import tqdm
 
 from boatrace.common import get_beautiful_soup
 from boatrace.parameter import StadiumUrls
-from boatrace.scrape.track import TrackConst
-from boatrace.scrape.track import Latest3MonthCourseResultConst
-from boatrace.scrape.track import Latest3MonthFrameResultConst
-from boatrace.scrape.track import SeasonResultConst
-from boatrace.scrape.track import MemoConst
+from boatrace.scrape.track import TrackHtmlClass
+from boatrace.scrape.track import Latest3MonthCourseResultHtmlClass
+from boatrace.scrape.track import Latest3MonthFrameResultHtmlClass
+from boatrace.scrape.track import SeasonResultHtmlClass
+from boatrace.scrape.track import MemoHtmlClass
 from boatrace.scrape.track import Latest3MonthCourseResultColumns
 from boatrace.scrape.track import Latest3MonthFrameResultColumns
 from boatrace.scrape.track import SeasonResultColumns
 from boatrace.scrape.track import MemoColumns
-
 from boatrace.setting import CUSTOM_PARAM
 
 
-
 class TrackScraping:
+    """コース場のスクレイピング"""
 
     def __init__(self):
         self._course_column = Latest3MonthCourseResultColumns()
@@ -38,7 +37,7 @@ class TrackScraping:
 
     def _extract_course_ids(self) -> list[str]:
         soup = get_beautiful_soup(StadiumUrls.STADIUM_TOP, CUSTOM_PARAM.cache_folder)
-        div_soups = soup.find_all("div", class_=TrackConst.table_class)
+        div_soups = soup.find_all("div", class_=TrackHtmlClass.table_class)
 
         tr_soups = []
         for div_soup in div_soups:
@@ -56,7 +55,7 @@ class TrackScraping:
         soup = get_beautiful_soup(url, CUSTOM_PARAM.cache_folder)
 
         def get_latest_course_result_data():
-            table_soup = soup.find("table", class_=Latest3MonthCourseResultConst.table_class)
+            table_soup = soup.find("table", class_=Latest3MonthCourseResultHtmlClass.table_class)
             tbody_soups = table_soup.find_all("tbody")
             scrape_datas = []
             for tbody_soup in tbody_soups:
@@ -66,7 +65,7 @@ class TrackScraping:
             return scrape_datas
 
         def get_latest_frame_result_data():
-            table_soup = soup.find("table", class_=Latest3MonthFrameResultConst.table_class)
+            table_soup = soup.find("table", class_=Latest3MonthFrameResultHtmlClass.table_class)
             tbody_soups = table_soup.find_all("tbody")
             scrape_datas = []
             for tbody_soup in tbody_soups:
@@ -76,7 +75,7 @@ class TrackScraping:
             return scrape_datas
 
         def get_season_result_data():
-            table_soups = soup.find_all("table", class_=SeasonResultConst.table_class)
+            table_soups = soup.find_all("table", class_=SeasonResultHtmlClass.table_class)
 
             spring_tbody_soups = table_soups[0].find_all("tbody")
             summer_tbody_soups = table_soups[1].find_all("tbody")
@@ -103,7 +102,7 @@ class TrackScraping:
             return scrape_datas
 
         def get_memo_data():
-            frame_soup = soup.find("div", class_=MemoConst.table_class)
+            frame_soup = soup.find("div", class_=MemoHtmlClass.table_class)
             dd_soups = frame_soup.find_all("dd")
             datas = [course_id] + [dd_soup.text for dd_soup in dd_soups]
             return self._memo_column.cast(datas)

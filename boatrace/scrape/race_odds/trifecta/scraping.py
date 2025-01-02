@@ -1,26 +1,24 @@
-from typing import Any
-
 from bs4.element import Tag
 from datetime import datetime
 
 from boatrace.common import split_list
 from boatrace.common import get_beautiful_soup
 from boatrace.parameter import RaceInfoUrls
+from boatrace.scrape.race_odds.trifecta import OddsTrifectaHtmlClass
 from boatrace.scrape.race_odds.trifecta import OddsTrifectaColumns
-from boatrace.scrape.race_odds.trifecta import OddsTrifectaConst
 from boatrace.setting import CUSTOM_PARAM, TOOL_PARAM
 
 
-
 class OddsTrifectaScraping:
+    """3連単オッズのスクレイピング"""
     def __init__(self):
-        pass
+        self._column = OddsTrifectaColumns()
 
     def scrape(self, race_id: int, stadium_id: int, date: datetime) -> list[dict]:
         url = RaceInfoUrls.FMT_ODDS_TRIFECTA.format(race_id, stadium_id, date)
         soup = get_beautiful_soup(url, CUSTOM_PARAM.cache_folder)
 
-        td_soups = soup.find("tbody", class_=OddsTrifectaConst.tbody_class).find_all("td")
+        td_soups = soup.find("tbody", class_=OddsTrifectaHtmlClass.tbody_class).find_all("td")
         line_td_soups = split_list(td_soups, n_div=TOOL_PARAM.n_racer - 1)
 
         scrape_datas = []
@@ -29,8 +27,8 @@ class OddsTrifectaScraping:
         return scrape_datas
 
     def _extract_odds(self, race_id: int, stadium_id: int, date: datetime, line_td_soup: Tag) -> list[dict]:
-        fs14_td_soups = [td_soup for td_soup in line_td_soup if OddsTrifectaConst.td_class in td_soup.attrs["class"]]
-        td_soups      = [td_soup for td_soup in line_td_soup if OddsTrifectaConst.td_class not in td_soup.attrs["class"]]
+        fs14_td_soups = [td_soup for td_soup in line_td_soup if OddsTrifectaHtmlClass.td_class in td_soup.attrs["class"]]
+        td_soups      = [td_soup for td_soup in line_td_soup if OddsTrifectaHtmlClass.td_class not in td_soup.attrs["class"]]
 
         block_td_soups = []
         cell_td_soups = split_list(td_soups, n_div=len(td_soups) // 2)
@@ -47,7 +45,7 @@ class OddsTrifectaScraping:
                 bet_no = f"{no_1st},{no_2nd},{no_3rd}",
                 odds = data_soup.text
 
-                scrape_datas.append(OddsTrifectaColumns().cast([
+                scrape_datas.append(self._column.cast([
                     race_id,
                     stadium_id,
                     date,

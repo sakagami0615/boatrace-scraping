@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 from boatrace.common import ColumnsMixin
 from boatrace.common import ColumnDatatype
-from boatrace.common.cast_function import Datetime, Name, Temperature, Distance, StartTiming, Money
+from boatrace.common.cast_function import Set, Datetime, Name, Temperature, Distance, StartTiming, Money
 
 
 
@@ -23,7 +23,7 @@ class RaceResultColumns(ColumnsMixin):
     wind_direction:     ColumnDatatype = field(default_factory=lambda: ColumnDatatype("風向", str))
     water_temperature:  ColumnDatatype = field(default_factory=lambda: ColumnDatatype("水温", Temperature))
     wave_height:        ColumnDatatype = field(default_factory=lambda: ColumnDatatype("波高", Distance))
-    restoration:        ColumnDatatype = field(default_factory=lambda: ColumnDatatype("返還", str))
+    restoration:        ColumnDatatype = field(default_factory=lambda: ColumnDatatype("返還", Set))
     wintric:            ColumnDatatype = field(default_factory=lambda: ColumnDatatype("決まり手", str))
 
 

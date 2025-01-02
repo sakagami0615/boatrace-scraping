@@ -28,7 +28,7 @@ class RaceBeforeWeatherIndex:
 
 
 @dataclass
-class RaceBeforeConst:
+class RaceBeforeHtmlClass:
     racer_table_class: str = "is-w748"
     start_table_class: str = "is-w238"
     weather_div_class: str = "weather1"

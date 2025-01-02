@@ -1,3 +1,3 @@
 from .column import OddsExactaColumns
-from .param import OddsExactaConst
+from .param import OddsExactaHtmlClass
 from .scraping import OddsExactaScraping

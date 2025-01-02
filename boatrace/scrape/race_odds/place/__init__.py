@@ -1,3 +1,3 @@
 from .column import OddsPlaceColumns
-from .param import OddsPlaceConst
+from .param import OddsPlaceHtmlClass
 from .scraping import OddsPlaceScraping

@@ -1,4 +1,4 @@
 from .column import OddsQuinellaPlaceColumns
-from .param import OddsQuinellaPlaceConst
+from .param import OddsQuinellaPlaceHtmlClass
 from .scraping import OddsQuinellaPlaceScraping
 

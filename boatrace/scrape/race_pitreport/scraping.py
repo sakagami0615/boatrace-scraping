@@ -7,13 +7,13 @@ from boatrace.common import get_beautiful_soup
 from boatrace.parameter import RaceInfoUrls
 from boatrace.scrape.race_pitreport import RacePitReportTdIndex
 from boatrace.scrape.race_pitreport import RacePitReportRacerIndex
-from boatrace.scrape.race_pitreport import RacePitReportConst
+from boatrace.scrape.race_pitreport import RacePitReportHtmlClass
 from boatrace.scrape.race_pitreport import RacePitReportColumns
 from boatrace.setting import CUSTOM_PARAM, TOOL_PARAM
 
 
-
 class RacePitReportScraping:
+    """ピットレポートのスクレイピング"""
 
     def __init__(self):
         self._columns = RacePitReportColumns()
@@ -29,7 +29,7 @@ class RacePitReportScraping:
                 empty_datas.append(self._create_empty__pit_report(race_id, stadium_id, date))
             return empty_datas
 
-        table_soups = soup.find_all("div", class_=RacePitReportConst.table_class)
+        table_soups = soup.find_all("div", class_=RacePitReportHtmlClass.table_class)
         tbody_soups = table_soups[-1].find_all("tbody")
 
         scrape_datas = []
@@ -38,7 +38,7 @@ class RacePitReportScraping:
         return scrape_datas
 
     def _check_exist_pit_report(self, soup: Tag) -> bool:
-        alert_soup = soup.find("h3", class_=RacePitReportConst.alert_class)
+        alert_soup = soup.find("h3", class_=RacePitReportHtmlClass.alert_class)
         return alert_soup is None
 
     def _create_empty__pit_report(self, race_id: int, stadium_id: int, date: datetime) -> dict:

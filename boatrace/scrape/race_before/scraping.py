@@ -6,12 +6,13 @@ from boatrace.common import get_beautiful_soup
 from boatrace.parameter import RaceInfoUrls
 from boatrace.scrape.race_before import RaceBeforeRacerStatusIndex
 from boatrace.scrape.race_before import RaceBeforeWeatherIndex
-from boatrace.scrape.race_before import RaceBeforeConst
+from boatrace.scrape.race_before import RaceBeforeHtmlClass
 from boatrace.scrape.race_before import RaceBeforeColumns
 from boatrace.setting import CUSTOM_PARAM
 
 
 class RaceBeforeScraping:
+    """事前情報のスクレイピング"""
 
     def __init__(self):
         self._column = RaceBeforeColumns()
@@ -20,9 +21,9 @@ class RaceBeforeScraping:
         url = RaceInfoUrls.FMT_BEFORE_INFO.format(race_id, stadium_id, date)
         soup = get_beautiful_soup(url, CUSTOM_PARAM.cache_folder)
 
-        racer_soup = soup.find("table", class_=RaceBeforeConst.racer_table_class)
-        start_soup = soup.find("table", class_=RaceBeforeConst.start_table_class)
-        weather_soup = soup.find("div", class_=RaceBeforeConst.weather_div_class)
+        racer_soup = soup.find("table", class_=RaceBeforeHtmlClass.racer_table_class)
+        start_soup = soup.find("table", class_=RaceBeforeHtmlClass.start_table_class)
+        weather_soup = soup.find("div", class_=RaceBeforeHtmlClass.weather_div_class)
 
         racer_tbody_soups = racer_soup.find_all("tbody")
         start_tr_soups = start_soup.find("tbody").find_all("tr")
@@ -47,15 +48,15 @@ class RaceBeforeScraping:
         before_result_st = racer_td_soups[RaceBeforeRacerStatusIndex.before_result_st].text
         before_result_rank = racer_td_soups[RaceBeforeRacerStatusIndex.before_result_rank].text
 
-        st = start_soup.find("span", class_=RaceBeforeConst.start_tr_class).text
+        st = start_soup.find("span", class_=RaceBeforeHtmlClass.start_tr_class).text
 
-        weather_unit_soups = weather_soup.find_all("div", class_=RaceBeforeConst.weather_bodyunit_class)
-        temperature = weather_unit_soups[RaceBeforeWeatherIndex.temperature].find("span", class_=RaceBeforeConst.temperature_class).text
-        weather = weather_unit_soups[RaceBeforeWeatherIndex.weather].find("span", class_=RaceBeforeConst.weather_class).text
-        wind_velocity = weather_unit_soups[RaceBeforeWeatherIndex.wind_velocity].find("span", class_=RaceBeforeConst.wind_velocity_class).text
+        weather_unit_soups = weather_soup.find_all("div", class_=RaceBeforeHtmlClass.weather_bodyunit_class)
+        temperature = weather_unit_soups[RaceBeforeWeatherIndex.temperature].find("span", class_=RaceBeforeHtmlClass.temperature_class).text
+        weather = weather_unit_soups[RaceBeforeWeatherIndex.weather].find("span", class_=RaceBeforeHtmlClass.weather_class).text
+        wind_velocity = weather_unit_soups[RaceBeforeWeatherIndex.wind_velocity].find("span", class_=RaceBeforeHtmlClass.wind_velocity_class).text
         wind_direction = weather_unit_soups[RaceBeforeWeatherIndex.wind_direction].find("p").attrs["class"][-1]
-        water_temperature = weather_unit_soups[RaceBeforeWeatherIndex.water_temperature].find("span", class_=RaceBeforeConst.water_temperature_class).text
-        wave_height = weather_unit_soups[RaceBeforeWeatherIndex.wave_height].find("span", class_=RaceBeforeConst.wave_height_class).text
+        water_temperature = weather_unit_soups[RaceBeforeWeatherIndex.water_temperature].find("span", class_=RaceBeforeHtmlClass.water_temperature_class).text
+        wave_height = weather_unit_soups[RaceBeforeWeatherIndex.wave_height].find("span", class_=RaceBeforeHtmlClass.wave_height_class).text
 
         return self._column.cast([
             race_id,

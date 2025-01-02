@@ -9,14 +9,13 @@ from tqdm import tqdm
 from boatrace.common import get_beautiful_soup
 from boatrace.parameter import Grade
 from boatrace.parameter import ScheduleUrls
-from boatrace.scrape.schedule import ScheduleColumns
 from boatrace.scrape.schedule import ScheduleTableInfoInHtml
-
+from boatrace.scrape.schedule import ScheduleColumns
 from boatrace.setting import CUSTOM_PARAM, TOOL_PARAM
 
 
-
 class ScheduleScraping:
+    """レーススケジュールのスクレイピング"""
 
     def __init__(self):
         self._column = ScheduleColumns()

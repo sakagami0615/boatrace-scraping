@@ -14,7 +14,7 @@ class StadiumUrls:
     """
     STADIUM_TOP: str = BaseUrls.RACE_INFO + "/extra/data/stadium/index.html"
 
-    FMT_STADIUM: str = BaseUrls.RACE_INFO + "/data/stadium?jcd={}"
+    FMT_STADIUM: str = BaseUrls.RACE_INFO + "/data/stadium?jcd={:02}"
 
 
 @dataclass
@@ -42,9 +42,3 @@ class ScheduleUrls:
     hdc: グレード
     """
     FMT_SCHEDULE: str = BaseUrls.RACE_INFO + "/race/gradesch?year={}&hcd={}"
-    FMT_SGPG1   : str = BaseUrls.RACE_INFO + "/race/gradesch?year={}&hcd=01"
-    FMT_G1G2    : str = BaseUrls.RACE_INFO + "/race/gradesch?year={}&hcd=02"
-    FMT_G3      : str = BaseUrls.RACE_INFO + "/race/gradesch?year={}&hcd=03"
-    FMT_VENUS   : str = BaseUrls.RACE_INFO + "/race/gradesch?year={}&hcd=04"
-    FMT_ROOKIE  : str = BaseUrls.RACE_INFO + "/race/gradesch?year={}&hcd=05"
-    FMT_MASTER  : str = BaseUrls.RACE_INFO + "/race/gradesch?year={}&hcd=06"

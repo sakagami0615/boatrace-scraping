@@ -2,5 +2,5 @@ from dataclasses import dataclass
 
 
 @dataclass
-class OddsQuinellaPlaceConst:
+class OddsQuinellaPlaceHtmlClass:
     tbody_class: str = "is-p3-0"

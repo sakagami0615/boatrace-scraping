@@ -56,6 +56,6 @@ class RaceCardBoatIndex:
 
 
 @dataclass
-class RaceCardConst:
+class RaceCardHtmlClass:
     table_class: str = "table1 is-tableFixed__3rdadd"
     tbody_class: str = "is-fs12"

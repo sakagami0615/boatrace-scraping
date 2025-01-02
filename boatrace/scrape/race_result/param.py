@@ -32,9 +32,10 @@ class RaceResultReturnIndex:
 
 
 @dataclass
-class RaceResultConst:
+class RaceResultHtmlClass:
     result_table_class: str = "is-w495"
     weather_table_class: str = "weather1"
+    restoration_div_class: str = "is-w243 is-h168"
     wintric_div_class: str = "is-h108__3rdadd"
 
     st_class: str = "table1_boatImage1TimeInner"
@@ -45,5 +46,7 @@ class RaceResultConst:
     wind_velocity_class: str = "weather1_bodyUnitLabelData"
     water_temperature_class: str = "weather1_bodyUnitLabelData"
     wave_height_class: str = "weather1_bodyUnitLabelData"
+
+    restoration_class: str = "numberSet1_number"
 
     wintric_class: str = "is-fs16"

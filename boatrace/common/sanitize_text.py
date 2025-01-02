@@ -12,12 +12,14 @@ def _replace_line_break_duplicate_to_single(text: str) -> str:
 
 
 def sanitize_text(text: str) -> str:
+    """テキストから不要文字を削除"""
     text = _delete_space_char(text)
     text = _replace_line_break_duplicate_to_single(text)
     return text.strip()
 
 
 def td_text_split(td_text: str) -> list[str]:
+    """td要素内のテキストを改行ごとに分割"""
     text = sanitize_text(td_text)
     tokens = [token for token in re.split("[\n/]", text) if token.strip()]
     return tokens

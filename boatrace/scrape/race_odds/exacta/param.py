@@ -2,5 +2,5 @@ from dataclasses import dataclass
 
 
 @dataclass
-class OddsExactaConst:
+class OddsExactaHtmlClass:
     tbody_class: str = "is-p3-0"

@@ -4,7 +4,6 @@ from boatrace.common import ColumnsMixin
 from boatrace.common import ColumnDatatype
 
 
-
 @dataclass
 class Latest3MonthCourseResultColumns(ColumnsMixin):
     stadium_id:                 ColumnDatatype = field(default_factory=lambda: ColumnDatatype("レース場ID", int))

@@ -24,13 +24,24 @@ def _get_html_cache_path(url: str, cache_dirpath=None):
     return os.path.join(cache_dirpath, f"{dirname}-{basename}.pickle")
 
 
-def get_beautiful_soup(url: str, cache_dirpath=None) -> BeautifulSoup:
+def get_beautiful_soup(url: str, cache_dirpath=None, sleep_time: int = 2) -> BeautifulSoup:
+    """HTMLのパースデータを取得
+    (キャッシュフォルダを指定した場合、取得したHTML情報をキャッシュフォルダに保存)
+
+    Args:
+        url (str): 取得先URL
+        cache_dirpath (_type_, optional): キャッシュフォルダパス (Defaults to None.)
+        sleep_time (int): HTML取得後の待機時間 (Defaults to 2.)
+
+    Returns:
+        BeautifulSoup: HTMLパースデータ
+    """
     cache_html_path = _get_html_cache_path(url, cache_dirpath)
     if cache_html_path and os.path.isfile(cache_html_path):
         return BeautifulSoup(read_pickle(cache_html_path), 'html.parser')
 
     response = requests.get(url)
-    sleep(2)
+    sleep(sleep_time)
 
     _create_html_cache(cache_html_path, response.text)
     return BeautifulSoup(response.text, "html.parser")

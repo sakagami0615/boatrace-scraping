@@ -6,7 +6,7 @@ from .param import RaceCardWideIndex
 from .param import RaceCardLocalIndex
 from .param import RaceCardMotorIndex
 from .param import RaceCardBoatIndex
-from .param import RaceCardConst
+from .param import RaceCardHtmlClass
 
 from .scraping import RaceCardScraping
 

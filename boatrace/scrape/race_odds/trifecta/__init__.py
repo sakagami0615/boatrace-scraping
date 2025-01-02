@@ -1,3 +1,3 @@
 from .column import OddsTrifectaColumns
-from .param import OddsTrifectaConst
+from .param import OddsTrifectaHtmlClass
 from .scraping import OddsTrifectaScraping
