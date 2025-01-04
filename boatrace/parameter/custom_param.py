@@ -7,6 +7,7 @@ from boatrace.common import read_toml
 class CustomParam:
     save_html_cache: bool = False
     cache_folder: str = "./cache"
+    output_folder: str = "./output"
 
 
 def create_custom_param(toml_filepath: str = "./pyproject.toml") -> CustomParam:

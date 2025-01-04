@@ -25,6 +25,10 @@ class OddsPlaceScraping:
             boat_no = tbody_soup.find("td", class_=OddsPlaceHtmlClass.boat_no_td_class).text
             minmax_odds = tbody_soup.find("td", class_=OddsPlaceHtmlClass.odds_td_class).text.strip().split("-")
 
+            # 欠場の場合は無効値をセット
+            if len(minmax_odds) == 1:
+                minmax_odds = [None, None]
+
             scrape_datas.append(self._column.cast([
                 race_id,
                 stadium_id,

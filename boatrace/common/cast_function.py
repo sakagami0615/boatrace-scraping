@@ -1,6 +1,8 @@
 from typing import Any
 from datetime import datetime
 
+from boatrace.common import sanitize_text
+
 
 def Datetime(value: Any) -> datetime:
     """時刻データへのキャスト関数
@@ -27,7 +29,7 @@ def Set(value: Any) -> set:
         set: 集合データ
     """
     if isinstance(value, str):
-        return set([d.strip() for d in value.split(",")])
+        return set([sanitize_text(d) for d in value.split(",")])
     else:
         return set(value)
 
@@ -42,7 +44,7 @@ def List(value: Any) -> list:
         list: 配列データ
     """
     if isinstance(value, str):
-        return [d.strip() for d in value.split(",")]
+        return [sanitize_text(d) for d in value.split(",")]
     else:
         return list(value)
 
@@ -57,7 +59,7 @@ def Name(value: Any) -> str:
     Returns:
         str: 名前文字列
     """
-    return str(value).replace("　", "").replace(" ", "").strip()
+    return sanitize_text(str(value).replace("　", "").replace(" ", ""))
 
 
 def Age(value: Any) -> int:
@@ -70,7 +72,7 @@ def Age(value: Any) -> int:
         int: 年齢データ
     """
     if isinstance(value, str):
-        return int(value.replace("歳", "").strip())
+        return int(sanitize_text(value.replace("歳", "")))
     else:
         return int(value)
 
@@ -85,7 +87,7 @@ def Weight(value: Any) -> float:
         float: 体重データ
     """
     if isinstance(value, str):
-        return float(value.replace("kg", "").strip())
+        return float(sanitize_text(value.replace("kg", "")))
     else:
         return float(value)
 
@@ -100,7 +102,7 @@ def Temperature(value: Any) -> float:
         float: 温度データ
     """
     if isinstance(value, str):
-        return float(value.replace("℃", "").strip())
+        return float(sanitize_text(value.replace("℃", "")))
     else:
         return float(value)
 
@@ -115,13 +117,14 @@ def Distance(value: Any) -> float:
         float: 距離データ
     """
     if isinstance(value, str):
-        return float(value.replace("cm", "").replace("m", "").strip())
+        return float(sanitize_text(value.replace("cm", "").replace("m", "")))
     else:
         return float(value)
 
 
 def StartTiming(value: Any) -> float:
     """スタートタイミングデータへのキャスト関数
+    (決まり手の文字があった場合は、削除する)
 
     Args:
         value (Any): 変換前データ(ex1: ".1", ex1: "F.1")
@@ -130,7 +133,9 @@ def StartTiming(value: Any) -> float:
         float: スタートタイミングデータ
     """
     if isinstance(value, str):
-        return float(value.replace("F", "-").strip())
+        # 改行文字で分割し、「決まり手」の文字を分ける
+        tokens = sanitize_text(value.replace("F", "-")).split()
+        return float(tokens[0])
     else:
         return float(value)
 
@@ -145,6 +150,6 @@ def Money(value: Any) -> int:
         int: 金額データ
     """
     if isinstance(value, str):
-        return int(value.replace("¥", "").replace(",", "").strip())
+        return int(sanitize_text(value.replace("¥", "").replace(",", "")))
     else:
         return int(value)

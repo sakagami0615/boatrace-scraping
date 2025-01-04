@@ -2,7 +2,7 @@ import re
 
 
 def _delete_space_char(text: str) -> str:
-    return text.replace("\u3000", "").replace(" ", "").replace("\t", "")
+    return text.replace("\u3000", "").replace(" ", "").replace("\t", "").replace("\xa0", "")
 
 
 def _replace_line_break_duplicate_to_single(text: str) -> str:

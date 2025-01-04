@@ -161,11 +161,11 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# tool cache path
+# tool cache or output or log path
 cache/
+output/
+scrape_data/
+log/
 
 # my local path
 @old/
-memo.md
-*.csv
-sample.py

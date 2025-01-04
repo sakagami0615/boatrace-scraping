@@ -27,12 +27,15 @@ class TrackScraping:
         course_ids = self._extract_course_ids()
 
         course_datas, frame_datas, season_datas, memo_datas = [], [], [], []
-        for course_id in tqdm(course_ids, total=len(course_ids)):
-            course_result, frame_result, season_result, memo_result = self._extract_track_info(course_id)
-            course_datas.extend(course_result)
-            frame_datas.extend(frame_result)
-            season_datas.extend(season_result)
-            memo_datas.append(memo_result)
+
+        with tqdm(course_ids, total=len(course_ids)) as bar:
+            for course_id in bar:
+                bar.set_description(f"[TrackIter-{course_id}]")
+                course_result, frame_result, season_result, memo_result = self._extract_track_info(course_id)
+                course_datas.extend(course_result)
+                frame_datas.extend(frame_result)
+                season_datas.extend(season_result)
+                memo_datas.append(memo_result)
         return course_datas, frame_datas, season_datas, memo_datas
 
     def _extract_course_ids(self) -> list[str]:

@@ -37,6 +37,7 @@ class RaceResultHtmlClass:
     weather_table_class: str = "weather1"
     restoration_div_class: str = "is-w243 is-h168"
     wintric_div_class: str = "is-h108__3rdadd"
+    frame_td_class: str = "is-fs14"
 
     st_class: str = "table1_boatImage1TimeInner"
 

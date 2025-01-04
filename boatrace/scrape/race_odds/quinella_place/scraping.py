@@ -37,6 +37,10 @@ class OddsQuinellaPlaceScraping:
             bet_no = f"{no_1st},{no_2nd}"
             minmax_odds = td_soups[idx_1st * 2 + 1].text.strip().split("-")
 
+            # 欠場の場合は無効値をセット
+            if len(minmax_odds) == 1:
+                minmax_odds = [None, None]
+
             if minmax_odds != [""]:
                 scrape_datas.append(self._column.cast([
                     race_id,

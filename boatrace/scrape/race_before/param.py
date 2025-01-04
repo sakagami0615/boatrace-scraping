@@ -29,6 +29,7 @@ class RaceBeforeWeatherIndex:
 
 @dataclass
 class RaceBeforeHtmlClass:
+    absent_tbody_class: str = "is-miss"
     racer_table_class: str = "is-w748"
     start_table_class: str = "is-w238"
     weather_div_class: str = "weather1"

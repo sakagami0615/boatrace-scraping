@@ -6,7 +6,10 @@ from bs4 import BeautifulSoup
 from time import sleep
 
 from boatrace.common import read_pickle, write_pickle
+from boatrace.setting import CUSTOM_LOGGER
 
+
+logger = CUSTOM_LOGGER.create_logger(__name__)
 
 
 def _create_html_cache(html_path: Union[str, None], html_text: str) -> None:
@@ -21,6 +24,10 @@ def _get_html_cache_path(url: str, cache_dirpath=None):
         return None
     basename = os.path.basename(url)
     dirname = os.path.basename(os.path.dirname(url))
+
+    # windowsではファイル名に?を使用できないので、全角に変換
+    basename = basename.replace("?", "？")
+
     return os.path.join(cache_dirpath, f"{dirname}-{basename}.pickle")
 
 
@@ -38,8 +45,10 @@ def get_beautiful_soup(url: str, cache_dirpath=None, sleep_time: int = 2) -> Bea
     """
     cache_html_path = _get_html_cache_path(url, cache_dirpath)
     if cache_html_path and os.path.isfile(cache_html_path):
+        logger.info(f"Get URL request in cache ({url})")
         return BeautifulSoup(read_pickle(cache_html_path), 'html.parser')
 
+    logger.info(f"Get URL request ({url})")
     response = requests.get(url)
     sleep(sleep_time)
 

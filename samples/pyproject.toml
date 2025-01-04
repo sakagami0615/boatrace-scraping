@@ -1,0 +1,4 @@
+[tool.boatrace]
+save_html_cache = true
+cache_folder = "../cache"
+output_folder = "../scrape_data"

@@ -20,7 +20,7 @@ class ScheduleScraping:
     def __init__(self):
         self._column = ScheduleColumns()
 
-    def scrape(self, years=Union[int, list[int]], grade_types=Union[Grade, list[Grade]]) -> list[dict]:
+    def scrape(self, years: Union[int, list[int]], grade_types: Union[Grade, list[Grade]]) -> list[dict]:
         if not isinstance(years, list):
             years = [years]
         if not isinstance(grade_types, list):
@@ -28,18 +28,21 @@ class ScheduleScraping:
 
         scrape_datas = []
         iter = product(years, grade_types)
-        for year, grade_type in tqdm(iter, total=len(years) * len(grade_types)):
-            url = ScheduleUrls.FMT_SCHEDULE.format(year, grade_type.value)
-            soup = get_beautiful_soup(url, CUSTOM_PARAM.cache_folder)
 
-            # get tr in tbody element
-            tbody_soups = soup.find_all("tbody")
-            tr_soups = []
-            for tbody_soup in tbody_soups:
-                tr_soups += tbody_soup.find_all("tr")
+        with tqdm(iter, total=len(years) * len(grade_types)) as bar:
+            for year, grade_type in bar:
+                bar.set_description(f"[SchIter-{year}]")
+                url = ScheduleUrls.FMT_SCHEDULE.format(year, grade_type.value)
+                soup = get_beautiful_soup(url, CUSTOM_PARAM.cache_folder)
 
-            for tr_soup in tr_soups:
-                scrape_datas += self._extract_schedule_info(year, tr_soup)
+                # get tr in tbody element
+                tbody_soups = soup.find_all("tbody")
+                tr_soups = []
+                for tbody_soup in tbody_soups:
+                    tr_soups += tbody_soup.find_all("tr")
+
+                for tr_soup in tr_soups:
+                    scrape_datas += self._extract_schedule_info(year, tr_soup)
 
         return scrape_datas
 

@@ -36,17 +36,33 @@ class RaceResultScraping:
         return_tbody_soups = return_soup.find_all("tbody")
         start_td_soups = start_soup.find_all("td")
 
+        # 出場と欠場の選手でtimeテーブルのtbodyを分割
+        # (枠の情報は数値ではない場合、欠場と判断)
+        valid_time_tbody_soups, invalid_time_tbody_soups = [], []
+        for time_tbody_soup in time_tbody_soups:
+            if time_tbody_soup.find("td", class_=RaceResultHtmlClass.frame_td_class).text.isdigit():
+                valid_time_tbody_soups.append(time_tbody_soup)
+            else:
+                invalid_time_tbody_soups.append(time_tbody_soup)
+
         result_datas, return_datas = [], []
-        for time_tbody_soup, start_td_soup in zip(time_tbody_soups, start_td_soups):
-            result_datas.append(self._extract_result(race_id, stadium_id, date,
-                                                     time_tbody_soup, start_td_soup, weather_soup, restoration_soup, wintric_soup))
+        # 出場選手の結果情報をappend
+        for time_tbody_soup, start_td_soup in zip(valid_time_tbody_soups, start_td_soups):
+            result_datas.append(self._extract_valid_result(race_id, stadium_id, date, time_tbody_soup, start_td_soup, weather_soup,
+                                                                                      restoration_soup, wintric_soup))
+        # 欠場選手の結果情報をappend
+        for time_tbody_soup in invalid_time_tbody_soups:
+            result_datas.append(self._extract_invalid_result(race_id, stadium_id, date, time_tbody_soup, weather_soup,
+                                                                                        restoration_soup, wintric_soup))
+
+        # 払い戻し情報をextend
         for return_tbody_soup in return_tbody_soups:
             return_data = self._extract_return(race_id, stadium_id, date, return_tbody_soup)
             if return_data:
                 return_datas += return_data
         return result_datas, return_datas
 
-    def _extract_result(self, race_id: int, stadium_id: int, date: datetime,
+    def _extract_valid_result(self, race_id: int, stadium_id: int, date: datetime,
                         time_soup: Tag, start_soup: Tag, weather_soup: Tag, restoration_soup: Tag, wintric_soup: Tag) -> dict:
         time_td_soups = time_soup.find_all("td")
         rank = time_td_soups[RaceResultTimeIndex.rank].text.strip()
@@ -60,7 +76,50 @@ class RaceResultScraping:
         temperature = weather_unit_soups[RaceResultWeatherIndex.temperature].find("span", class_=RaceResultHtmlClass.temperature_class).text
         weather = weather_unit_soups[RaceResultWeatherIndex.weather].find("span", class_=RaceResultHtmlClass.weather_class).text
         wind_velocity = weather_unit_soups[RaceResultWeatherIndex.wind_velocity].find("span", class_=RaceResultHtmlClass.wind_velocity_class).text
-        wind_direction = weather_unit_soups[RaceResultWeatherIndex.wind_direction].find("p").attrs["class"][-1]
+        wind_direction = weather_unit_soups[RaceResultWeatherIndex.wind_direction].find("p").attrs["class"][-1].replace("is-", "")
+        water_temperature = weather_unit_soups[RaceResultWeatherIndex.water_temperature].find("span", class_=RaceResultHtmlClass.water_temperature_class).text
+        wave_height = weather_unit_soups[RaceResultWeatherIndex.wave_height].find("span", class_=RaceResultHtmlClass.wave_height_class).text
+
+        restoration_span_soups = restoration_soup.find_all("span", RaceResultHtmlClass.restoration_class)
+        restoration = ",".join([restoration_span_soup.text.strip() for restoration_span_soup in restoration_span_soups])
+
+        wintric = wintric_soup.find("td", class_=RaceResultHtmlClass.wintric_class).text
+
+        return self._result_columns.cast([
+            race_id,
+            stadium_id,
+            date,
+            rank,
+            frame,
+            racer_id,
+            racer_name,
+            racetime,
+            start_timing,
+            temperature,
+            weather,
+            wind_velocity,
+            wind_direction,
+            water_temperature,
+            wave_height,
+            restoration,
+            wintric
+        ])
+
+    def _extract_invalid_result(self, race_id: int, stadium_id: int, date: datetime,
+                                time_soup: Tag, weather_soup: Tag, restoration_soup: Tag, wintric_soup: Tag) -> dict:
+        time_td_soups = time_soup.find_all("td")
+        rank = None
+        frame = time_td_soups[RaceResultTimeIndex.frame].text.strip()
+        racer_id, racer_name = sanitize_text(time_td_soups[RaceResultTimeIndex.racer].text).split()
+        racetime = time_td_soups[RaceResultTimeIndex.racetime].text
+
+        start_timing = None
+
+        weather_unit_soups = weather_soup.find_all("div", class_=RaceResultHtmlClass.weather_bodyunit_class)
+        temperature = weather_unit_soups[RaceResultWeatherIndex.temperature].find("span", class_=RaceResultHtmlClass.temperature_class).text
+        weather = weather_unit_soups[RaceResultWeatherIndex.weather].find("span", class_=RaceResultHtmlClass.weather_class).text
+        wind_velocity = weather_unit_soups[RaceResultWeatherIndex.wind_velocity].find("span", class_=RaceResultHtmlClass.wind_velocity_class).text
+        wind_direction = weather_unit_soups[RaceResultWeatherIndex.wind_direction].find("p").attrs["class"][-1].replace("is-", "")
         water_temperature = weather_unit_soups[RaceResultWeatherIndex.water_temperature].find("span", class_=RaceResultHtmlClass.water_temperature_class).text
         wave_height = weather_unit_soups[RaceResultWeatherIndex.wave_height].find("span", class_=RaceResultHtmlClass.wave_height_class).text
 
